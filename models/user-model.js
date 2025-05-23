@@ -31,7 +31,7 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
-    post_id: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
+    postId: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
     replies: [{ type: mongoose.Schema.Types.ObjectId, ref: "comment" }],
     reposts: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
   },
