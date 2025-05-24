@@ -76,7 +76,7 @@ exports.login = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "30d" }
     );
-
+ console.log("logintoken>>>",loginToken)
     res.cookie("token_login", loginToken, {
       maxAge: 1000 * 60 * 60 * 24 * 30,
       httpOnly: true,
@@ -100,7 +100,7 @@ exports.userDetails = async (req, res) => {
     }
     const user = await User.findById(id) // all detail samne wala user bas paaswar ni uth rhe hum
       .select("-password")
-      .populate("followers")
+      .populate("followers") // populate matlb ki bulana
       .populate({
         path: "postId",
         populate: [{ path: "likes" }, { path: "comments" }, { path: "admin" }], // post ki nesting
@@ -122,6 +122,7 @@ exports.userDetails = async (req, res) => {
 exports.followUser = async (req, res) => {
   try {
     const { id } = req.params; // search
+    console.log("id>>>>>>>>>>>", id);
     if (!id) {
       return res.status(400).json({ message: "Id is Required" });
     }
@@ -129,9 +130,9 @@ exports.followUser = async (req, res) => {
     if (!userExist) {
       return res.status(400).json({ message: "User Don`t Exist" });
     }
-    if (userExist.followers.includes(req.user._id)) // khud ko samne wale k{User}. follower mein check kar rhe hai  
-      
-      {
+    if (userExist.followers.includes(req.user._id)) {
+      // khud ko samne wale k{User}. follower mein check kar rhe hai
+
       await User.findByIdAndUpdate(
         userExist._id,
         {
