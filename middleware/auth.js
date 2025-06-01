@@ -1,41 +1,33 @@
 const User = require("../models/user-model");
 const jwt = require("jsonwebtoken");
 
-exports.auth =  (req, res, next) => {
-  console.log(req.cookies.token)
+const auth = async (req, res, next) => {
+  // console.log(req.cookies)
   try {
     const token = req.cookies.token;
-    // console.log("cookies?????????", req.cookies);
-
     if (!token) {
-      return res.status(400).json({ message: "No Token provide" });
+      return res.status(400).json({ msg: "No token in auth !" });
     }
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-      if (err) {
-        return res.sendStatus(403); // Invalid token
-      }});
-    console.log("decoded>>>>>>>>>>>>>>>>>>>>", decodedToken);
-
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    console.log("decoded>>>>>>>>>>>>>>>",decodedToken)
     if (!decodedToken) {
       return res
         .status(400)
-        .json({
-          message: "error while decoding in auth",
-          error: error.message,
-        });
+        .json({ msg: "Error while decoding token in auth !" });
     }
-    const user = await User.findById(decodedToken.token).populate("followers")
-    .populate("postId")
-    .populate("replies")
-    .populate("reposts");
+    const user = await User.findById(decodedToken.token)
+      .populate("followers")
+      // .populate("threads")
+      // .populate("replies")
+      // .populate("reposts");
     if (!user) {
-      return res
-        .status(404)
-        .json({ message: "User not found" });
+      return res.status(400).json({ msg: "No user found !" });
     }
     req.user = user;
     next();
-  } catch (error) {
-    res.status(500).json({ message: "Error in auth", error: error.message });
+  } catch (err) {
+    return res.status(400).json({ msg: "Error in auth !", err: err.message });
   }
 };
+
+module.exports = auth;

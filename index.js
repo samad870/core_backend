@@ -1,5 +1,5 @@
 const express = require("express");
-var cookieParser = require('cookie-parser')
+const cookieParser = require('cookie-parser')
 const router = require("./routes");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(cookieParser())
 connectDatabase();
-app.use("", router);
+app.use("/api", router);
 const port = process.env.PORT;
 
 app.listen(port, () => {
