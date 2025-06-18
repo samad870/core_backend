@@ -141,7 +141,7 @@ exports.followUser = async (req, res) => {
     const userExist = await User.findById(id); // find krre samne wale user ko
     if (!userExist) {
       return res.status(400).json({ message: "User Don`t Exist" });
-    }
+    } 
     if (userExist.followers.includes(req.user._id)) {
       // khud ko samne wale k{User}. follower mein check kar rhe hai
 
@@ -208,7 +208,7 @@ exports.updateProfile = async (req, res) => {
           { folder: "insta_clone/Profile" }
         );
         if (!uploadedImage) {
-          res.status(500).json({ message: "Error while Uploaded Image" });
+         return res.status(500).json({ message: "Error while Uploaded Image" });
         }
         await User.findByIdAndUpdate(
           req.user._id,
