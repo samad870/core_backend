@@ -18,7 +18,7 @@ const {
   repost,
 } = require("./controllers/post-controller");
 
-const { addComment } = require("./controllers/comment-controller");
+const { addComment ,  deleteComment} = require("./controllers/comment-controller");
 
 const auth = require("./middleware/auth");
 
@@ -43,5 +43,8 @@ router.put("/repost/:id", auth, repost);
 
 // comment model route
 router.post("/comment/:id", auth, addComment);  
+router.delete("/delete/:postId/:id", auth, deleteComment);  
+
+
 
 module.exports = router;
